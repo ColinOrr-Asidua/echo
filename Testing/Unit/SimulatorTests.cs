@@ -117,6 +117,11 @@ namespace Unit.SimulatorTests
             simulator.Dispose();
         };
 
+        It should_close_the_server = () =>
+        {
+            Simulator.HostingProvider.Received().Close(Arg.Any<HttpSelfHostServer>());
+        };
+
         It should_dispose_of_the_server = () =>
         {
             server.Received().Dispose();

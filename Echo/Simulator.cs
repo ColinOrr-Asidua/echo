@@ -89,7 +89,11 @@ namespace Echo
         /// </summary>
         public void Dispose()
         {
-            if (server != null) server.Dispose();
+            if (server != null)
+            {
+                Simulator.HostingProvider.Close(server as HttpSelfHostServer);
+                server.Dispose();
+            }
         }
 
         #endregion

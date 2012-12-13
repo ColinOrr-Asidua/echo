@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 
@@ -36,12 +35,15 @@ namespace Echo.Controllers
         /// Simulates a response to a web request.
         /// </summary>
         /// <returns>The simulated response message.</returns>
-        [HttpGet]
+        [HttpGet, HttpPut, HttpPost, HttpDelete]
         public HttpResponseMessage Simulate()
         {
-            if (simulator.Responses.Any())
+            foreach (var response in simulator.Responses)
             {
-                return simulator.Responses.First().Message;
+                if (response.Rule == null || response.Rule(this.Request))
+                {
+                    return response.Message;
+                }
             }
 
             return new HttpResponseMessage();

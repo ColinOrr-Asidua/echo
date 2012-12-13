@@ -15,5 +15,14 @@ namespace Echo.Providers
         {
             server.OpenAsync().Wait();
         }
+
+        /// <summary>
+        /// Closes the specified server.
+        /// </summary>
+        /// <param name="server">The HttpSelfHostServer server to close.</param>
+        public virtual void Close(HttpSelfHostServer server)
+        {
+            server.CloseAsync().Wait();
+        }
     }
 }
