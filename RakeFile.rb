@@ -12,3 +12,21 @@ msbuild :build do |msb|
     msb.properties = { :Configuration => 'Scripted' }
     msb.solution = 'Echo.sln'
 end
+
+#
+# Testing Tasks
+
+desc 'Performs all of the tests'
+task :test => [:build, :acceptance_test, :unit_test]
+
+desc 'Acceptance tests the code'
+nunit :acceptance_test do |nunit|
+    nunit.command = 'Packages\NUnit.Runners.2.6.2\tools\nunit-console-x86.exe'
+    nunit.assemblies 'Build\bin\Testing\Acceptance\Acceptance.dll'
+end
+
+desc 'Unit tests the code and records the results'
+mspec :unit_test do |mspec|
+    mspec.command = 'Packages\Machine.Specifications.0.5.10\tools\mspec-clr4.exe'
+    mspec.assemblies 'Build\bin\Testing\Unit\Unit.dll'
+end
