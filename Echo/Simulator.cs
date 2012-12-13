@@ -1,6 +1,8 @@
-﻿using Echo.Providers;
+﻿using Echo.Controllers;
+using Echo.Providers;
 using System;
 using System.Collections.Generic;
+using System.Web.Http;
 using System.Web.Http.SelfHost;
 
 namespace Echo
@@ -13,7 +15,7 @@ namespace Echo
         #region Fields
 
         //  Dependencies
-        private readonly HttpSelfHostServer server;
+        private readonly IDisposable server;
 
         //  Private fields used to back the properties
         private static SelfHostProvider hostingProvider;
@@ -45,7 +47,8 @@ namespace Echo
         /// <summary>
         /// Default constructor.
         /// </summary>
-        private Simulator(HttpSelfHostServer server)
+        /// <param name="server">The server associated with this simulator.</param>
+        public Simulator(IDisposable server)
         {
             this.server = server;
             Responses = new List<Response>();
@@ -61,12 +64,23 @@ namespace Echo
         /// <returns>The simulator that can be configured with responses, and whose requests can be examined.</returns>
         public static Simulator Start(int port)
         {
-            //  Start the HTTP server
+            //  Configure the HTTP server
             var configuration = new HttpSelfHostConfiguration("http://localhost:" + port);
+            configuration.Routes.MapHttpRoute(
+                name: "Simulator",
+                routeTemplate: "",
+                defaults: new { controller = "Simulator", action = "Simulate" }
+            );
+            
+            //  Start the HTTP server
             var server = new HttpSelfHostServer(configuration);
+            var simulator = new Simulator(server);
             HostingProvider.Open(server);
 
-            return new Simulator(server);
+            //  Use our custom dependency resolution
+            configuration.DependencyResolver = new DependencyResolver(simulator);
+
+            return simulator;
         }
 
         /// <summary>
@@ -75,7 +89,7 @@ namespace Echo
         /// </summary>
         public void Dispose()
         {
-            server.Dispose();
+            if (server != null) server.Dispose();
         }
 
         #endregion

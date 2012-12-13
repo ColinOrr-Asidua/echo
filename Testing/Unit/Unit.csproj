@@ -76,6 +76,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DependencyResolverTests.cs" />
+    <Compile Include="Controllers\SimulatorControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseTests.cs" />
     <Compile Include="SimulatorTests.cs" />

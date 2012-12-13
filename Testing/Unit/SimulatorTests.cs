@@ -1,7 +1,9 @@
 ﻿using Echo;
+using Echo.Controllers;
 using Echo.Providers;
 using Machine.Specifications;
 using NSubstitute;
+using System;
 using System.Web.Http.SelfHost;
 
 namespace Unit.SimulatorTests
@@ -14,7 +16,7 @@ namespace Unit.SimulatorTests
         public Context()
         {
             Simulator.HostingProvider = Substitute.For<SelfHostProvider>();
-            simulator = Simulator.Start(8080);
+            simulator = new Simulator(null);
         }
     }
 
@@ -77,6 +79,47 @@ namespace Unit.SimulatorTests
         {
             var configuration = (HttpSelfHostConfiguration)server.Configuration;
             configuration.BaseAddress.ToString().ShouldEqual("http://localhost:12345/");
+        };
+
+        It should_configure_the_server_with_a_route_to_the_SimulatorController = () =>
+        {
+            var configuration = (HttpSelfHostConfiguration)server.Configuration;
+            var route = configuration.Routes["Simulator"];
+
+            route.RouteTemplate.ShouldBeEmpty();
+            route.Defaults["controller"].ShouldEqual("Simulator");
+            route.Defaults["action"].ShouldEqual("Simulate");
+        };
+
+        It should_configure_the_server_with_a_DependencyResolver = () =>
+        {
+            var configuration = (HttpSelfHostConfiguration)server.Configuration;
+            configuration.DependencyResolver.ShouldBeOfType<DependencyResolver>();
+        };
+    }
+
+    #endregion
+
+    #region .Dispose() Tests
+
+    class when_I_call_Dispose : Context
+    {
+        static IDisposable server;
+
+        Establish context = () =>
+        {
+            server = Substitute.For<IDisposable>();
+            simulator = new Simulator(server);
+        };
+
+        Because of = () =>
+        {
+            simulator.Dispose();
+        };
+
+        It should_dispose_of_the_server = () =>
+        {
+            server.Received().Dispose();
         };
     }
 

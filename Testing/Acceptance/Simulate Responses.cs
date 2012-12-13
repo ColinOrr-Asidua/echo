@@ -18,7 +18,7 @@ namespace Acceptance
             simulator = Simulator.Start(8080);
         }
 
-        [Test, Ignore]
+        [Test]
         public void Single_Response()
         {
             //  Configure a single response

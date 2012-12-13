@@ -76,6 +76,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DependencyResolver.cs" />
+    <Compile Include="Controllers\SimulatorController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\SelfHostProvider.cs" />
     <Compile Include="Response.cs" />
