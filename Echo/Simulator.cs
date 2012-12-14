@@ -33,6 +33,11 @@ namespace Echo
         }
 
         /// <summary>
+        /// Gets a list of requests that have been received by the simulator.
+        /// </summary>
+        public IList<Request> Requests { get; private set; }
+
+        /// <summary>
         /// Gets a list of canned responses to be used when requests are received.
         /// </summary>
         /// <remarks>
@@ -51,6 +56,7 @@ namespace Echo
         public Simulator(IDisposable server)
         {
             this.server = server;
+            Requests = new List<Request>();
             Responses = new List<Response>();
         }
 
@@ -68,7 +74,7 @@ namespace Echo
             var configuration = new HttpSelfHostConfiguration("http://localhost:" + port);
             configuration.Routes.MapHttpRoute(
                 name: "Simulator",
-                routeTemplate: "",
+                routeTemplate: "{*path}",
                 defaults: new { controller = "Simulator", action = "Simulate" }
             );
             

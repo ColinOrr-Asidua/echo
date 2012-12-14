@@ -24,6 +24,11 @@ namespace Unit.SimulatorTests
 
     class when_I_construct : Context
     {
+        It should_initialize_the_Requests_list = () =>
+        {
+            simulator.Requests.ShouldBeEmpty();
+        };
+
         It should_initialize_the_Responses_list = () =>
         {
             simulator.Responses.ShouldBeEmpty();
@@ -86,7 +91,7 @@ namespace Unit.SimulatorTests
             var configuration = (HttpSelfHostConfiguration)server.Configuration;
             var route = configuration.Routes["Simulator"];
 
-            route.RouteTemplate.ShouldBeEmpty();
+            route.RouteTemplate.ShouldEqual("{*path}");
             route.Defaults["controller"].ShouldEqual("Simulator");
             route.Defaults["action"].ShouldEqual("Simulate");
         };

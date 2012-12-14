@@ -2,6 +2,7 @@
 using Echo.Controllers;
 using Machine.Specifications;
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 
@@ -12,11 +13,13 @@ namespace Unit.Controllers.SimulatorControllerTests
     {
         public static Simulator simulator;
         public static SimulatorController controller;
+        public static HttpRequestMessage request;
 
         public Context()
         {
             simulator = new Simulator(null);
             controller = new SimulatorController(simulator);
+            controller.Request = request = new HttpRequestMessage(HttpMethod.Delete, "http://localhost/");
         }
     }
 
@@ -35,13 +38,18 @@ namespace Unit.Controllers.SimulatorControllerTests
 
     #region .Simulate() Tests
 
-    class when_I_call_Simulate_with_no_responses : Context
+    class when_I_call_Simulate : Context
     {
         static HttpResponseMessage result;
 
         Because of = () =>
         {
             result = controller.Simulate();
+        };
+
+        It should_add_the_request_to_the_simulator_Requests_list = () =>
+        {
+            simulator.Requests.Single().RequestUri.ToString().ShouldEqual("http://localhost/");
         };
 
         It should_return_an_HttpResponseMessage_with_an_OK_status = () =>

@@ -38,6 +38,8 @@ namespace Echo.Controllers
         [HttpGet, HttpPut, HttpPost, HttpDelete]
         public HttpResponseMessage Simulate()
         {
+            simulator.Requests.Add(this.Request);
+
             foreach (var response in simulator.Responses)
             {
                 if (response.Rule == null || response.Rule(this.Request))
