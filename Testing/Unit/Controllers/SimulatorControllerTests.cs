@@ -110,6 +110,8 @@ namespace Unit.Controllers.SimulatorControllerTests
 
         Establish context = () =>
         {
+            controller.Request = new HttpRequestMessage();
+
             responseA = new HttpResponseMessage();
             responseB = new HttpResponseMessage();
             responseC = new HttpResponseMessage();

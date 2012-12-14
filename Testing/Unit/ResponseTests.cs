@@ -15,7 +15,7 @@ namespace Unit.ResponseTests
 
     class when_I_construct : Context
     {
-        static Predicate<HttpRequestMessage> rule;
+        static Predicate<Request> rule;
         static HttpResponseMessage message;
 
         Establish context = () =>
