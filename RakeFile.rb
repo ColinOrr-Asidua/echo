@@ -30,3 +30,18 @@ mspec :unit_test do |mspec|
     mspec.command = 'Packages\Machine.Specifications.0.5.10\tools\mspec-clr4.exe'
     mspec.assemblies 'Build\bin\Testing\Unit\Unit.dll'
 end
+
+#
+# Packaging Tasks
+
+desc 'Packages the binaries to the Build\package folder'
+task :package => :build do
+
+    # Clear any existing packaged files
+    folder = 'Build\package'
+    sh "rmdir /q /s #{folder}" if Dir.exists? folder
+    
+    # Package the DLLs
+    sh "xcopy /y /s /exclude:.pakignore Build\\bin\\Echo\\* #{folder}\\"
+    
+end
