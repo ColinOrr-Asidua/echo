@@ -38,9 +38,14 @@ namespace Unit.RequestTests
             request.Content.ShouldEqual("Content");
         };
 
-        It should_map_the_Headers = () =>
+        It should_map_the_RequestHeaders = () =>
         {
-            request.Headers.ShouldBeTheSameAs(message.Headers);
+            request.RequestHeaders.ShouldBeTheSameAs(message.Headers);
+        };
+
+        It should_map_the_ContentHeaders = () =>
+        {
+            request.ContentHeaders.ShouldBeTheSameAs(message.Content.Headers);
         };
 
         It should_map_the_Method = () =>

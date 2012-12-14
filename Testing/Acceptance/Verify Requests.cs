@@ -41,6 +41,7 @@ namespace Acceptance
             Assert.AreEqual("Hello World", captured.Content);
             Assert.AreEqual("http://localhost:8080/system/path/", captured.RequestUri.ToString());
             Assert.AreEqual(HttpMethod.Post, captured.Method);
+            Assert.AreEqual("text/plain", captured.ContentHeaders.ContentType.MediaType);
         }
 
         #region Tear Down

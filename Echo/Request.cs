@@ -24,7 +24,12 @@ namespace Echo
         /// <summary>
         /// Gets the collection of HTTP request headers.
         /// </summary>
-        public HttpRequestHeaders Headers { get { return message.Headers; } }
+        public HttpRequestHeaders RequestHeaders { get { return message.Headers; } }
+
+        /// <summary>
+        /// Gets the HTTP content headers as defined in RFC 2616.
+        /// </summary>
+        public HttpContentHeaders ContentHeaders { get { return message.Content.Headers; } }
         
         /// <summary>
         /// Gets the HTTP method used by the HTTP request message.
