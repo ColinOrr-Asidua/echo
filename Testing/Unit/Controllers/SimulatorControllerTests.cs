@@ -114,9 +114,9 @@ namespace Unit.Controllers.SimulatorControllerTests
             responseB = new HttpResponseMessage();
             responseC = new HttpResponseMessage();
 
-            simulator.Responses.Add(new Response { Rule = r => false, Message = responseA });
-            simulator.Responses.Add(new Response { Rule = r => true, Message = responseB });
-            simulator.Responses.Add(new Response { Rule = r => true, Message = responseC });
+            simulator.Responses.Add(new Response(r => false, responseA));
+            simulator.Responses.Add(new Response(r => true, responseB));
+            simulator.Responses.Add(new Response(r => true, responseC));
         };
 
         Because of = () =>

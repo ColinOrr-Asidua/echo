@@ -48,21 +48,18 @@ namespace Acceptance
             //  Configure multiple responses
             var responses = new List<Response>
             {
-                new Response
-                {
-                    Rule = r => r.Method == HttpMethod.Get,
-                    Message = new HttpResponseMessage { Content = new StringContent("Response A") }
-                },
-                new Response
-                {
-                    Rule = r => r.Method == HttpMethod.Delete,
-                    Message = new HttpResponseMessage { Content = new StringContent("Response B") }
-                },
-                new Response
-                {
-                    Rule = r => r.Method == HttpMethod.Post,
-                    Message = new HttpResponseMessage { Content = new StringContent("Response C") }
-                },
+                new Response(
+                    rule: r => r.Method == HttpMethod.Get,
+                    message: new HttpResponseMessage { Content = new StringContent("Response A") }
+                ),
+                new Response(
+                    rule: r => r.Method == HttpMethod.Delete,
+                    message: new HttpResponseMessage { Content = new StringContent("Response B") }
+                ),
+                new Response(
+                    rule: r => r.Method == HttpMethod.Post,
+                    message: new HttpResponseMessage { Content = new StringContent("Response C") }
+                ),
             };
 
             responses.ForEach(r => simulator.Responses.Add(r));
