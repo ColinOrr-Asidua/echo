@@ -35,7 +35,7 @@ namespace Echo.Controllers
         /// Simulates a response to a web request.
         /// </summary>
         /// <returns>The simulated response message.</returns>
-        [HttpGet, HttpPut, HttpPost, HttpDelete]
+        [HttpGet, HttpPut, HttpPost, HttpDelete, HttpHead, HttpOptions]
         public HttpResponseMessage Simulate()
         {
             simulator.Requests.Add(this.Request);
