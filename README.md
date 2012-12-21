@@ -3,6 +3,40 @@ echo
 
 A light-weight, in-process HTTP simulator for easy integration testing.
 
+Usage
+-----
+    //  Start the simulator on http://localhost:8080
+
+    using (var simulator = Simulator.Start(8080))
+    {
+        //  Configure a response for "/greeting"
+
+        simulator.Responses.Add(
+            new Response(
+                rule: r => r.RequestUri.PathAndQuery == "greeting",
+                message: new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent("Hello World"),
+                }
+            )
+        );
+
+        //  Go ahead and visit http://localhost:8080/greeting in your browser...
+
+        WebRequest
+            .Create("http://localhost:8080/greeting")
+            .GetResponse().Dispose();
+        
+        //  The simulator collects any requests for verification later
+
+        var request = simulator.Requests.Single();
+
+        Console.WriteLine(request.Method);
+        Console.WriteLine(request.RequestUri);
+        Console.WriteLine(request.Content);        
+    }
+
 License
 -------
 
