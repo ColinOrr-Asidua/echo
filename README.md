@@ -12,7 +12,7 @@ using (var simulator = Simulator.Start(8080))
     //  Configure a response for "/greeting"
     simulator.Responses.Add(
         new Response(
-            rule: r => r.RequestUri.PathAndQuery == "greeting",
+            rule: r => r.RequestUri.PathAndQuery == "/greeting",
             message: new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
