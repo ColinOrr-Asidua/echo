@@ -4,6 +4,11 @@ require 'albacore'
 task :default => :build
 
 #
+# Constants
+
+NUGET = '.nuget\NuGet.exe'
+
+#
 # Build Tasks
 
 desc 'Builds the project to the Build\bin folder (only if changes have been made)'
@@ -44,4 +49,9 @@ task :package => :build do
     # Package the DLLs
     sh "xcopy /y /s /exclude:.pakignore Build\\bin\\Echo\\* #{folder}\\"
     
+end
+
+desc 'Builds a NuGet package in the Build folder'
+task :package_nuget do
+    sh "#{NUGET} pack Echo\\Echo.csproj -Properties Configuration=Scripted -OutputDirectory Build"
 end

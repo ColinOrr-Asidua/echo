@@ -1,7 +1,7 @@
 echo
 ====
 
-A light-weight, in-process HTTP simulator for easy integration testing.
+A light-weight, in-process HTTP simulator for easy functional testing.
 
 Usage
 -----
@@ -38,7 +38,7 @@ using (var simulator = Simulator.Start(8080))
 License
 -------
 
-Copyright (C) 2012  Colin Orr
+Copyright © Colin Orr 2013
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
