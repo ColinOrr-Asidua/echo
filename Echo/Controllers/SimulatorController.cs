@@ -44,7 +44,7 @@ namespace Echo.Controllers
             {
                 if (response.Rule == null || response.Rule(this.Request))
                 {
-                    return response.Message;
+                    return response.Message();
                 }
             }
 

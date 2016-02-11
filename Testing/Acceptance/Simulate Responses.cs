@@ -17,8 +17,8 @@ namespace Acceptance
         [SetUp]
         public void SetUp()
         {
-            //  Start the simulator on port 8080
-            simulator = Simulator.Start(8080);
+            //  Start the simulator on port 3000
+            simulator = Simulator.Start(3000);
         }
 
         #endregion
@@ -28,11 +28,11 @@ namespace Acceptance
         {
             //  Configure a single response
             simulator.Responses.Add(
-                new HttpResponseMessage { Content = new StringContent("Hello World") }
+                new Response(() => new HttpResponseMessage { Content = new StringContent("Hello World") })
             );
 
             //  Make a web request to the simulator
-            var request = HttpWebRequest.Create("http://localhost:8080");
+            var request = HttpWebRequest.Create("http://localhost:3000");
             var response = request.GetResponse();
 
             //  Check the response
@@ -50,22 +50,22 @@ namespace Acceptance
             {
                 new Response(
                     rule: r => r.Method == HttpMethod.Get,
-                    message: new HttpResponseMessage { Content = new StringContent("Response A") }
+                    message: () => new HttpResponseMessage { Content = new StringContent("Response A") }
                 ),
                 new Response(
                     rule: r => r.Method == HttpMethod.Delete,
-                    message: new HttpResponseMessage { Content = new StringContent("Response B") }
+                    message: () => new HttpResponseMessage { Content = new StringContent("Response B") }
                 ),
                 new Response(
                     rule: r => r.Method == HttpMethod.Post,
-                    message: new HttpResponseMessage { Content = new StringContent("Response C") }
+                    message: () => new HttpResponseMessage { Content = new StringContent("Response C") }
                 ),
             };
 
             responses.ForEach(r => simulator.Responses.Add(r));
 
             //  Make a web request to the simulator
-            var request = HttpWebRequest.Create("http://localhost:8080");
+            var request = HttpWebRequest.Create("http://localhost:3000");
             request.Method = "DELETE";
             var response = request.GetResponse();
 
@@ -77,10 +77,26 @@ namespace Acceptance
         }
 
         [Test]
+        public void Reuse_Response()
+        {
+            //  Configure a single response
+            simulator.Responses.Add(
+                new Response(() => new HttpResponseMessage { Content = new StringContent("Hello World") })
+            );
+
+            //  Make two identical web requests
+            var requestA = HttpWebRequest.Create("http://localhost:3000");
+            requestA.GetResponse().GetResponseStream().Dispose();
+
+            var requestB = HttpWebRequest.Create("http://localhost:3000");
+            requestB.GetResponse().GetResponseStream().Dispose();
+        }
+
+        [Test]
         public void No_Responses()
         {
             //  Make a web request to the simulator
-            var request = HttpWebRequest.Create("http://localhost:8080");
+            var request = HttpWebRequest.Create("http://localhost:3000");
             var response = (HttpWebResponse)request.GetResponse();
 
             //  Check the response

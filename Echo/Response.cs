@@ -17,33 +17,28 @@ namespace Echo
         /// <summary>
         /// Gets the HttpResponseMessage to be returned.
         /// </summary>
-        public HttpResponseMessage Message { get; private set; }
+        public Func<HttpResponseMessage> Message { get; private set; }
 
         #region Constructors
         /// <summary>
         /// Constructs a new Response with the specified properties.
         /// </summary>
-        /// <param name="rule">The rule used to decide if the response should be returned.</param>
-        /// <param name="message">The HttpResponseMessage to be returned.</param>
-        public Response(Predicate<Request> rule, HttpResponseMessage message)
+        /// <param name="message">A function that builds the HttpResponseMessage to be returned.</param>
+        public Response(Func<HttpResponseMessage> message) : this(null, message)
         {
-            if (message == null) throw new ArgumentNullException("message");
-            
-            Rule = rule;
-            Message = message;
         }
 
-        #endregion
-
-        #region Operators
         /// <summary>
-        /// Converts an HttpResponseMessage to a Response.
+        /// Constructs a new Response with the specified properties.
         /// </summary>
-        /// <param name="message">The HttpResponseMessage to be converted.</param>
-        /// <returns>A new Response with no rule.</returns>
-        public static implicit operator Response(HttpResponseMessage message)
+        /// <param name="rule">The rule used to decide if the response should be returned.</param>
+        /// <param name="message">A function that builds the HttpResponseMessage to be returned.</param>
+        public Response(Predicate<Request> rule, Func<HttpResponseMessage> message)
         {
-            return new Response(null, message);
+            if (message == null) throw new ArgumentNullException("message");
+
+            Rule = rule;
+            Message = message;
         }
 
         #endregion

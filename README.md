@@ -6,8 +6,8 @@ A light-weight, in-process HTTP simulator for easy functional testing.
 Usage
 -----
 ```c#
-//  Start the simulator on http://localhost:8080
-using (var simulator = Simulator.Start(8080))
+//  Start the simulator on http://localhost:3000
+using (var simulator = Simulator.Start(3000))
 {
     //  Configure a response for "/greeting"
     simulator.Responses.Add(
@@ -21,11 +21,11 @@ using (var simulator = Simulator.Start(8080))
         )
     );
 
-    //  Go ahead and visit http://localhost:8080/greeting in your browser...
+    //  Go ahead and visit http://localhost:3000/greeting in your browser...
     WebRequest
-        .Create("http://localhost:8080/greeting")
+        .Create("http://localhost:3000/greeting")
         .GetResponse().Dispose();
-    
+
     //  The simulator collects any requests for verification later
     var request = simulator.Requests.Single();
 
@@ -38,7 +38,7 @@ using (var simulator = Simulator.Start(8080))
 License
 -------
 
-Copyright © Colin Orr 2013
+Copyright ï¿½ Colin Orr 2013
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

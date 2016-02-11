@@ -16,12 +16,12 @@ namespace Unit.ResponseTests
     class when_I_construct : Context
     {
         static Predicate<Request> rule;
-        static HttpResponseMessage message;
+        static Func<HttpResponseMessage> message;
 
         Establish context = () =>
         {
             rule = r => true;
-            message = new HttpResponseMessage();
+            message = () => new HttpResponseMessage();
         };
 
         Because of = () =>
@@ -44,37 +44,8 @@ namespace Unit.ResponseTests
     {
         It throws_an_ArgumentNullException = () =>
         {
-            var exception = Catch.Exception(() => new Response(r => true, null));
+            var exception = Catch.Exception(() => new Response(null));
             exception.ShouldBeOfType<ArgumentNullException>();
-        };
-    }
-
-    #endregion
-
-    #region operator Response(HttpResponseMessage message) Tests
-
-    class when_I_convert_a_HttpResponseMessage : Context
-    {
-        static HttpResponseMessage message;
-
-        Establish context = () =>
-        {
-            message = new HttpResponseMessage();
-        };
-
-        Because of = () =>
-        {
-            response = message;
-        };
-
-        It should_assign_the_message_to_the_Message_property = () =>
-        {
-            response.Message.ShouldBeTheSameAs(message);
-        };
-
-        It should_set_the_Rule_property_to_null = () =>
-        {
-            response.Rule.ShouldBeNull();
         };
     }
 

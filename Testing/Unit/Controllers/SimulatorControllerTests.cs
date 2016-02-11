@@ -66,7 +66,7 @@ namespace Unit.Controllers.SimulatorControllerTests
         Establish context = () =>
         {
             response = new HttpResponseMessage();
-            simulator.Responses.Add(response);
+            simulator.Responses.Add(new Response(() => response));
         };
 
         Because of = () =>
@@ -93,9 +93,9 @@ namespace Unit.Controllers.SimulatorControllerTests
             responseB = new HttpResponseMessage();
             responseC = new HttpResponseMessage();
 
-            simulator.Responses.Add(responseA);
-            simulator.Responses.Add(responseB);
-            simulator.Responses.Add(responseC);
+            simulator.Responses.Add(new Response(() => responseA));
+            simulator.Responses.Add(new Response(() => responseB));
+            simulator.Responses.Add(new Response(() => responseC));
         };
 
         Because of = () =>
@@ -124,9 +124,9 @@ namespace Unit.Controllers.SimulatorControllerTests
             responseB = new HttpResponseMessage();
             responseC = new HttpResponseMessage();
 
-            simulator.Responses.Add(new Response(r => false, responseA));
-            simulator.Responses.Add(new Response(r => true, responseB));
-            simulator.Responses.Add(new Response(r => true, responseC));
+            simulator.Responses.Add(new Response(r => false, () => responseA));
+            simulator.Responses.Add(new Response(r => true, () => responseB));
+            simulator.Responses.Add(new Response(r => true, () => responseC));
         };
 
         Because of = () =>
