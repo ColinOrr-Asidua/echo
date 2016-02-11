@@ -13,7 +13,7 @@ using (var simulator = Simulator.Start(3000))
     simulator.Responses.Add(
         new Response(
             rule: r => r.RequestUri.PathAndQuery == "/greeting",
-            message: new HttpResponseMessage
+            message: () => new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent("Hello World"),
@@ -38,7 +38,7 @@ using (var simulator = Simulator.Start(3000))
 License
 -------
 
-Copyright � Colin Orr 2013
+Copyright Colin Orr 2013
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
